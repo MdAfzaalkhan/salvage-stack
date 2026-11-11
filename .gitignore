@@ -1,0 +1,14 @@
+.godot/
+builds/
+*.keystore
+*.jks
+export_credentials.cfg
+evidence/test-save.json*
+evidence/*.png
+evidence/*.avi
+evidence/*.mp4
+
+.salvage-update-backups/
+.salvage-update-*/
+.DS_Store
+

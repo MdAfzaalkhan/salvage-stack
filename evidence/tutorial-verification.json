@@ -1,0 +1,25 @@
+{
+	"errors": [],
+	"layouts": [
+		{
+			"saved_completion": true,
+			"skip": true,
+			"touch_prompts_checked": 4,
+			"viewport": "(720, 1280)"
+		},
+		{
+			"saved_completion": true,
+			"skip": true,
+			"touch_prompts_checked": 4,
+			"viewport": "(720, 1560)"
+		},
+		{
+			"saved_completion": true,
+			"skip": true,
+			"touch_prompts_checked": 4,
+			"viewport": "(960, 1280)"
+		}
+	],
+	"note": "Headless actual Control and physics/input checks; no rendered screenshot/device claim.",
+	"old_save_migration": true
+}

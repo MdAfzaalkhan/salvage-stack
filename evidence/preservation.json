@@ -1,0 +1,12 @@
+{
+  "baseline": "0.1.1 latest delivered archive",
+  "unchanged_files_sha256": {
+    "scripts/content.gd": "b5f0bdcc823bfb7d4fc1956e6343277d84ba63bc32741dce2741226468b7b381",
+    "scripts/store.gd": "26204c522d4752bbf281245bbbff6ada2879302af12e2f7b0e3ed18ccc3739a1",
+    "scripts/audio.gd": "78a59d1dd98a056f07acaac5524ad0e3b668c0c66b217c0834f658530d9bd6fa",
+    "scripts/commerce.gd": "e2b14c1d211838af53d37e2e2903a3e6f4459ebebebd4ca5eeeedf9c8d53f7f9",
+    "audio_bus.tres": "1a0ad16dd0d56efd174698d9e0b636315df0455fdbbd550f7c75ce23af57f6ff"
+  },
+  "engine": "4.7.2.stable.official.ed1daf0bf",
+  "note": "Arena keeps original shapes, dimensions, collision construction, mass/material, gravity, thresholds, loss plane and round logic. Additions are drawing, a contact marker and an extraction visual signal. Export options are unchanged except application version/code."
+}

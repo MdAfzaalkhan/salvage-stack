@@ -1,0 +1,17 @@
+[remap]
+
+importer="font_data_bmfont"
+type="FontFile"
+uid="uid://d4fvaooky7o57"
+path="res://.godot/imported/salvage-grid.fnt-722071bce88d07da7c8da4037cbab623.fontdata"
+
+[deps]
+
+source_file="res://assets/fonts/salvage-grid.fnt"
+dest_files=["res://.godot/imported/salvage-grid.fnt-722071bce88d07da7c8da4037cbab623.fontdata"]
+
+[params]
+
+fallbacks=[]
+compress=true
+scaling_mode=2

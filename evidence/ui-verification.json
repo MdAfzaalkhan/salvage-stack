@@ -1,0 +1,18 @@
+{
+	"errors": [],
+	"layouts": [
+		{
+			"navigation_checked": true,
+			"viewport": "(720, 1280)"
+		},
+		{
+			"navigation_checked": true,
+			"viewport": "(720, 1560)"
+		},
+		{
+			"navigation_checked": true,
+			"viewport": "(960, 1280)"
+		}
+	],
+	"note": "Headless Control bounds checks, not visual or device inspection."
+}

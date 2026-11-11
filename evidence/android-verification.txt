@@ -1,0 +1,22 @@
+Verifies
+Verified using v1 scheme (JAR signing): false
+Verified using v2 scheme (APK Signature Scheme v2): true
+Verified using v3 scheme (APK Signature Scheme v3): true
+Verified using v3.1 scheme (APK Signature Scheme v3.1): false
+Verified using v4 scheme (APK Signature Scheme v4): false
+Verified for SourceStamp: false
+Number of signers: 1
+Signer #1 certificate DN: CN=Salvage Stack Development, O=Development, C=IN
+Signer #1 certificate SHA-256 digest: 0a28982b9198d1b86bc5cc7b3a9d40b7dfa21b98e5be693900bc133327aade1e
+Signer #1 certificate SHA-1 digest: 8567c4cc56e0252e0a26222abbd5735251989a0c
+Signer #1 certificate MD5 digest: 90a77328309d87f3fafa1b98fe81c816
+Signer #1 key algorithm: RSA
+Signer #1 key size (bits): 2048
+Signer #1 public key SHA-256 digest: 3a0223a5b68b6bb68096e030786c45546c3143834db9fc4a4df311b14c2e2ea7
+Signer #1 public key SHA-1 digest: af934f9df96894946f48e1a230eebe229eeb1e91
+Signer #1 public key MD5 digest: b4bcc0724eb68dba98c895089f2ff6d8
+package: name='com.vanthevor.salvagestack' versionCode='3' versionName='0.2.0' platformBuildVersionName='16' platformBuildVersionCode='36' compileSdkVersion='36' compileSdkVersionCodename='16'
+sdkVersion:'24'
+targetSdkVersion:'36'
+uses-permission: name='android.permission.VIBRATE'
+native-code: 'arm64-v8a'

@@ -1,0 +1,179 @@
+[gd_resource type="Theme" load_steps=15 format=3]
+
+[ext_resource type="Texture2D" path="res://assets/control-normal.png" id="normal"]
+
+[ext_resource type="Texture2D" path="res://assets/control-hover.png" id="hover"]
+
+[ext_resource type="Texture2D" path="res://assets/control-pressed.png" id="pressed"]
+
+[ext_resource type="Texture2D" path="res://assets/control-disabled.png" id="disabled"]
+
+[ext_resource type="Texture2D" path="res://assets/slider-thumb.svg" id="slider-thumb"]
+
+[ext_resource type="Texture2D" path="res://assets/toggle-on.svg" id="toggle-on"]
+
+[ext_resource type="Texture2D" path="res://assets/toggle-off.svg" id="toggle-off"]
+
+[sub_resource type="StyleBoxTexture" id="normal"]
+texture = ExtResource("normal")
+texture_margin_left = 16.0
+texture_margin_top = 16.0
+texture_margin_right = 16.0
+texture_margin_bottom = 16.0
+content_margin_left = 24.0
+content_margin_right = 24.0
+content_margin_top = 14.0
+content_margin_bottom = 14.0
+metadata/contrast_background = Color(0.126,0.137,0.18,1)
+
+[sub_resource type="StyleBoxTexture" id="hover"]
+texture = ExtResource("hover")
+texture_margin_left = 16.0
+texture_margin_top = 16.0
+texture_margin_right = 16.0
+texture_margin_bottom = 16.0
+content_margin_left = 24.0
+content_margin_right = 24.0
+content_margin_top = 14.0
+content_margin_bottom = 14.0
+metadata/contrast_background = Color(0.126,0.137,0.18,1)
+
+[sub_resource type="StyleBoxTexture" id="pressed"]
+texture = ExtResource("pressed")
+texture_margin_left = 16.0
+texture_margin_top = 16.0
+texture_margin_right = 16.0
+texture_margin_bottom = 16.0
+content_margin_left = 24.0
+content_margin_right = 24.0
+content_margin_top = 14.0
+content_margin_bottom = 14.0
+metadata/contrast_background = Color(0.126,0.137,0.18,1)
+
+[sub_resource type="StyleBoxTexture" id="disabled"]
+texture = ExtResource("disabled")
+texture_margin_left = 16.0
+texture_margin_top = 16.0
+texture_margin_right = 16.0
+texture_margin_bottom = 16.0
+content_margin_left = 24.0
+content_margin_right = 24.0
+content_margin_top = 14.0
+content_margin_bottom = 14.0
+metadata/contrast_background = Color(0.126,0.137,0.18,1)
+
+[sub_resource type="StyleBoxFlat" id="focus"]
+bg_color = Color(0,0,0,0)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(1,0.737,0.239,1)
+corner_radius_top_left = 16
+corner_radius_top_right = 16
+corner_radius_bottom_left = 16
+corner_radius_bottom_right = 16
+
+[sub_resource type="StyleBoxFlat" id="track"]
+bg_color = Color(0.18,0.2,0.26,1)
+content_margin_top = 4.0
+content_margin_bottom = 4.0
+corner_radius_top_left = 4
+corner_radius_top_right = 4
+corner_radius_bottom_left = 4
+corner_radius_bottom_right = 4
+
+[sub_resource type="StyleBoxFlat" id="fill"]
+bg_color = Color(0.8,0.53,0.16,1)
+content_margin_top = 4.0
+content_margin_bottom = 4.0
+corner_radius_top_left = 4
+corner_radius_top_right = 4
+corner_radius_bottom_left = 4
+corner_radius_bottom_right = 4
+
+[resource]
+default_font_size = 26
+Label/colors/font_color = Color(0.957,0.961,0.98,1)
+
+Button/colors/font_color = Color(0.957,0.961,0.98,1)
+
+Button/styles/normal = SubResource("normal")
+
+Button/colors/font_hover_color = Color(0.957,0.961,0.98,1)
+
+Button/styles/hover = SubResource("hover")
+
+Button/colors/font_pressed_color = Color(0.957,0.961,0.98,1)
+
+Button/styles/pressed = SubResource("pressed")
+
+Button/colors/font_hover_pressed_color = Color(0.957,0.961,0.98,1)
+
+Button/styles/hover_pressed = SubResource("pressed")
+
+Button/colors/font_focus_color = Color(0.957,0.961,0.98,1)
+
+Button/styles/focus = SubResource("focus")
+
+Button/colors/font_disabled_color = Color(0.682,0.71,0.776,1)
+
+Button/styles/disabled = SubResource("disabled")
+
+Button/font_sizes/font_size = 26
+
+CheckButton/colors/font_color = Color(0.957,0.961,0.98,1)
+
+CheckButton/styles/normal = SubResource("normal")
+
+CheckButton/colors/font_hover_color = Color(0.957,0.961,0.98,1)
+
+CheckButton/styles/hover = SubResource("hover")
+
+CheckButton/colors/font_pressed_color = Color(0.957,0.961,0.98,1)
+
+CheckButton/styles/pressed = SubResource("pressed")
+
+CheckButton/colors/font_hover_pressed_color = Color(0.957,0.961,0.98,1)
+
+CheckButton/styles/hover_pressed = SubResource("pressed")
+
+CheckButton/colors/font_focus_color = Color(0.957,0.961,0.98,1)
+
+CheckButton/styles/focus = SubResource("focus")
+
+CheckButton/colors/font_disabled_color = Color(0.682,0.71,0.776,1)
+
+CheckButton/styles/disabled = SubResource("disabled")
+
+CheckButton/font_sizes/font_size = 26
+
+CheckButton/icons/checked = ExtResource("toggle-on")
+
+CheckButton/icons/checked_disabled = ExtResource("toggle-on")
+
+CheckButton/icons/checked_mirrored = ExtResource("toggle-on")
+
+CheckButton/icons/checked_disabled_mirrored = ExtResource("toggle-on")
+
+CheckButton/icons/unchecked = ExtResource("toggle-off")
+
+CheckButton/icons/unchecked_disabled = ExtResource("toggle-off")
+
+CheckButton/icons/unchecked_mirrored = ExtResource("toggle-off")
+
+CheckButton/icons/unchecked_disabled_mirrored = ExtResource("toggle-off")
+
+HSlider/icons/grabber = ExtResource("slider-thumb")
+
+HSlider/icons/grabber_highlight = ExtResource("slider-thumb")
+
+HSlider/icons/grabber_disabled = ExtResource("slider-thumb")
+
+HSlider/styles/slider = SubResource("track")
+
+HSlider/styles/grabber_area = SubResource("fill")
+
+HSlider/styles/grabber_area_highlight = SubResource("fill")
+
+

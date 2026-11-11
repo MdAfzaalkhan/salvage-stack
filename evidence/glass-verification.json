@@ -1,0 +1,22 @@
+{
+	"extraction_logic_unchanged": true,
+	"failures": [],
+	"layouts": [
+		{
+			"grid_scroll_and_tap": true,
+			"modal_placement": true,
+			"viewport": "(720, 1280)"
+		},
+		{
+			"grid_scroll_and_tap": true,
+			"modal_placement": true,
+			"viewport": "(720, 1560)"
+		},
+		{
+			"grid_scroll_and_tap": true,
+			"modal_placement": true,
+			"viewport": "(960, 1280)"
+		}
+	],
+	"scope": "Headless Godot node/input/physics checks; no rendered screenshots or physical-device claim."
+}
