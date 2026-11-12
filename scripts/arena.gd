@@ -265,15 +265,13 @@ func snapshot() -> Dictionary:
 	return data
 
 func _draw() -> void:
-	draw_style_box(Glass.panel(Color("171c2a"),5,Color("48536c")),Rect2(-100,0,200,34))
-	draw_rect(Rect2(-76,34,152,40),Color("10141e"))
-	draw_line(Vector2(-98,3),Vector2(98,3),Color("9ba9c6"),2,true)
-	for n in range(3): Glass.reflection(self,Vector2((n-1)*58,17),32,Glass.accent(n+1),0.35)
-	# Same physical boundary at y=74, with markings below it, not a floor.
-	draw_line(Vector2(-355,74),Vector2(355,74),Color("ffbc3d"),1.7,true)
-	for x in range(-350,350,24):
-		draw_line(Vector2(x,95),Vector2(x+16,79),Color(1,0.737,0.239,0.42),1.4,true)
-	draw_string(ThemeDB.fallback_font,Vector2(-68,114),"LOSS BOUNDARY",HORIZONTAL_ALIGNMENT_LEFT,-1,16,Glass.SECONDARY)
+	var foundation_spec = {"kind":"foundation","w":200.0,"h":74.0,"gap":0.0,"offset":0.0,"surface":1.0,"treasure":0}
+	Glass.piece(self,foundation_spec,Vector2(0,37))
+	for n in range(3): Glass.reflection(self,Vector2((n-1)*58,12),28,Glass.accent(n+1),0.3)
+	# Markings are beneath the unchanged physical loss plane y=74.
+	draw_line(Vector2(-355,74),Vector2(355,74),Color(1,0.737,0.239,0.25),0.7,true)
+	for x in range(-180,180,13):
+		draw_line(Vector2(x,83),Vector2(x+6,77),Color(1,0.737,0.239,0.55),1,true)
 	if lost_id>=0:
 		draw_arc(failure_contact,10,0,TAU,32,Color("ff796c"),2,true)
 		draw_line(failure_contact+Vector2(0,-19),failure_contact+Vector2(0,-10),Color("ff796c"),2,true)

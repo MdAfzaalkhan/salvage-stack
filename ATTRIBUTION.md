@@ -9,3 +9,5 @@ Instructions, menus and numbers use Godot's built-in fallback sans serif. Godot 
 The existing music and effects remain the original synthesized assets created for this game. No commercial samples or Parcel Pilot assets/configuration were introduced.
 
 No external font downloads, native plugins or rendering dependencies were installed for this redesign.
+
+The 0.2.1 exact-contour material textures and their standard-library baker are original project artwork. Distance-field bevel normals, baked specular edge lighting, internal caustics and alpha silhouettes are generated locally from the existing collision unions. No external artwork, downloads or runtime shader dependency is required.

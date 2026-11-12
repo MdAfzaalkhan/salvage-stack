@@ -1,56 +1,33 @@
-# Salvage Stack — 0.2.0 Dark Glass
+# Salvage Stack — 0.2.1 Material and Framing Update
 
-Full visual upgrade of the existing Godot 4.7.2 Standard / GDScript / Compatibility project. Package identity remains `com.vanthevor.salvagestack`. The latest 0.1.1 delivered archive was the base; the Mac checkout inspected during this task was still at 0.1.0. It was not overwritten from this restricted session.
+This is the existing Godot 4.7.2 Standard / GDScript / Compatibility game. No engine, plugin, physics geometry, sequences, save format, tutorial progression or audio changes were made. Package identity remains `com.vanthevor.salvagestack`.
 
-## Update your local project
+## Apply to the Mac checkout
 
-Use the package-level `apply_update.py`, like the Parcel Pilot updater. Close Godot, extract the complete update package anywhere, and run this command **from the extracted update folder**:
+Close Godot. Extract the entire update ZIP anywhere. From the extracted update folder containing `apply_update.py`, run:
 
 ```bash
 python3 apply_update.py "/Users/mak/Documents/GitHub/salvage-stack"
 ```
 
-Add `--dry-run` to preview. Do not move just the Python file: it reads the adjacent payload and manifests. It validates known source versions, stops on conflicting local edits, makes a sibling backup, merges version/presentation fields, and preserves local signing/export configuration and player saves. No Downloads path is assumed. See `docs/UPDATING.md`.
+Optional preview: append `--dry-run`. Keep the script, payload and manifests together. No Downloads path or source-selection prompt is assumed. The updater validates payload hashes, stops on conflicting local source edits, backs up replaced files beside the destination, preserves saves/Git/caches and merges version fields into the owner's export configuration. See `docs/UPDATING.md`.
 
-Open the updated `project.godot` in Godot 4.7.2. The supplied development APK remains versionCode 3/versionName 0.2.0, with the same development signer as before. The game code/APK is unchanged by this updater-only packaging change.
+Open the updated `project.godot` in the installed Godot 4.7.2 and press F5. The package's `payload/` is also a standalone source project. The debug arm64 APK is `payload/builds/SalvageStack-debug.apk`, versionName 0.2.1 / versionCode 4, signed with the existing development signer. No production signing key is included.
 
-## What changed visually
+## Changes
 
-- Near-black violet/cool background, one reusable dark Theme, original nine-slice controls and consistent icon assets.
-- Original CC0 pixel font for the wordmark and short celebration headings; readable sans serif elsewhere.
-- Home has a separate decorative assembly/settling entrance, staggered treasure illumination, slow idle motion and restrained sheen/reflection. Controls are not held behind a mandatory wait. Reduced Motion has short fades and a static hero.
-- A responsive 12-sequence grid with saved best recovery/completion/current state. Touch dragging on a card scrolls without selecting it.
-- Compact gameplay branding, phase/divider, upcoming chips, dashed placement ghost and guide, numbered recovery indicators and white corner brackets around the selected treasure.
-- Smoked glass faces, inset bevel highlights and clipped specular facets for **all existing polygons**. There are no branded studs, fake supporting ledges or 3D conversion.
-- Treasures 1/2/3 use amber/magenta/cyan with white backed numbers. Extraction removes collision immediately, then animates a separate non-colliding copy toward the indicator. The effect never increments recovery or freezes the tower.
-- Dark contextual tutorial, centred Pause/Settings/results, actual recovery modules on the result shelf, short transitions and held-input reset.
-- Explicit readable normal/hover/pressed/hover-pressed/focus/disabled control states. Gameplay actions are dark with white labels/amber icons; primary navigation is amber with dark labels.
+- 61 original, exact-contour PNG materials at three texels per world unit. The source baker computes polygon-union masks, bevel distance/normals, specular edges, darker side/lower facets and narrow internal refractions. Compound seams and the old broad diagonal stripe are removed. Bevels stay inside collision outlines.
+- Substantial amber, magenta and cyan fronts with white numbers directly on the jewel face. No small framed number badge. Gameplay, previews, objective markers, Home, cards and results share the same materials.
+- Compact header, 54-pixel visible Pause surface inside an 88×72 target, smaller upcoming strip, contextual instructions and a centred short placement rail. No generic construction/recovery slogan in gameplay.
+- Rendering-only viewport transform. The Build frame is stable across authored placements; Extract gets one closer frame that remains through removals. An outlier taller tower can expand the envelope without moving, resizing, freezing or otherwise changing physics bodies. Touch coordinates and recovery effects use the inverse/forward render transform.
+- A darker exact-contour foundation, quieter markings under the real y=74 loss plane, short selected-module flash and the existing non-colliding recovery flight. Reduced Motion skips the selection flash and retains existing simplified motion.
 
-## What stays the same
+## Verification and limitations
 
-All 12 authored sequences and their unlocked/replayable behaviour, geometry, body materials/mass, 120 Hz physics, gravity, settling thresholds, loss rule, success checks, progression, settings, checkpoint saves, damage recovery, music/effects and unconfigured monetisation boundary remain. Existing saves migrate through the existing 0.1.1 loader. No new currencies, scores, timers, lives, shop, native services or dependencies were introduced.
+Automated checks passed: 93 sampled physics routes (72 authored construction/order wins, nine repeats and 12 centre-strategy probes), 120 checkpoint restoration suffixes, tutorial/migration, navigation, button-state contrast, pause/retry/results, simulated touch, card scrolling, audio settings and Reduced Motion. A new check validates 665,768 texture-alpha samples and 36 actual constructed tower layouts (12 sequences at three sizes). See `docs/VERIFICATION.md` and `evidence/`.
 
-Touch/mouse: slide in the arena or use the slider, then Drop. Select any gold/coloured treasure body or numbered indicator, then Extract. Numbers are identities, not an order. Keyboard: arrows, Space, 1/2/3, Escape. Retry and checkpoint restoration remain in Pause.
+**Actual running-game screenshots, recording and same-size before/after comparison were not obtainable.** Native Godot aborts during macOS application registration; the Android emulator also aborts at startup in this session. No physical Android device is connected. These are open verification deliverables, and no asset sheet or concept art is offered as implementation evidence. The approved reference and current screenshot were visible in this request, but final rendered material quality cannot be judged without a working graphical run. Visual parity is not claimed.
 
-## Evidence and limitations
+`docs/CAPTURE.md` supplies the real-game capture command. It produces Home, tutorial, early build, all-eight-piece tower, selected extraction, menus and real results without changing the regular save. Phone safe areas, practical touch comfort, effects performance, haptics and audible balance still need physical-device testing.
 
-Read `docs/VERIFICATION.md` and JSON evidence. All automated suites pass: 72 construction/order combinations, nine repeats, 120 checkpoint restorations, tutorial progression/migration, navigation and contrast, grid touch scrolling, modal bounds, Reduced Motion and immediate extraction/collision behaviour at three viewport sizes.
-
-**No actual screenshots or recording could be obtained in this session.** Godot computer access was denied; native graphical launch was unavailable in this environment. Reference-image metadata/OCR were available, but the bitmap download failed, so exact visual matching is not verified. No generated mockups or asset previews have been labelled as running-game evidence. Physical Android testing is also outstanding because ADB's listener is blocked.
-
-`docs/CAPTURE.md` and `tests/capture_screens.gd` provide an actual-render capture path for a graphical Godot session. They are not evidence that those captures have already been produced.
-
-Glass uses lightweight 2D gradients/polygons and texture controls, with no full-screen blur or expensive refraction shader. A simpler path skips sheen/reflections on hosts reporting four or fewer processors; it can also be forced with `salvage/visuals/simple_effects=true` in Project Settings. Phone profiling/readability remains to be checked.
-
-The game is not yet a verified store-ready release. Native monetisation, release signing/AAB, store setup, physical-device QA and final graphical comparison remain. See `docs/EXPORT.md` and `ATTRIBUTION.md`.
-
-## Automated checks
-
-```bash
-godot --headless --path . --fixed-fps 120 --script res://tests/verify.gd
-SALVAGE_TEST_SAVE_PATH=/tmp/salvage-ui-test.json godot --headless --path . --fixed-fps 120 --script res://tests/ui_verify.gd
-SALVAGE_TEST_SAVE_PATH=/tmp/salvage-tutorial-test.json godot --headless --path . --fixed-fps 120 --script res://tests/tutorial_verify.gd
-SALVAGE_TEST_SAVE_PATH=/tmp/salvage-glass-test.json godot --headless --path . --fixed-fps 120 --script res://tests/glass_verify.gd
-```
-
-Use an isolated save path for tests/capture; regular play continues using `user://salvage-save.json`. Existing Git ignore rules exclude imports, builds, credentials and updater backups.
+See `ATTRIBUTION.md` for original artwork/font/audio provenance and `docs/EXPORT.md` for export setup and remaining release requirements. This remains a development build with unconfigured monetisation and no claim of store readiness.

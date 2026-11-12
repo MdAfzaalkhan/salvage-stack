@@ -102,7 +102,7 @@ func run() -> void:
 	game.perform_action()
 	check(selected.collision_layer==0 and selected.collision_mask==0,"collision removal precedes flight effect")
 	check(game.arena.recovered==[2] and game.arena.bodies.size()==7,"extraction updates gameplay once")
-	check(game.effects.get_child_count()==1,"non-colliding extraction copy created")
+	check(game.effects.find_children("RecoveryFlight*","",false,false).size()==1,"non-colliding extraction copy created")
 	for node in game.effects.get_children(): check(not node is CollisionObject2D and node.get_child_count()==0,"visual effect has no colliders")
 	for b in game.arena.bodies: check(not b.freeze,"real tower never frozen for effect")
 	await settle()

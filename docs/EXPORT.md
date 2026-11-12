@@ -7,7 +7,7 @@ Version reported by that executable: `4.7.2.stable.official.ed1daf0bf`.
 Matching Android templates: `~/Library/Application Support/Godot/export_templates/4.7.2.stable`.
 SDK: `~/Library/Android/sdk`. Existing OpenJDK 17: `/opt/homebrew/opt/openjdk@17`.
 
-Android: `com.vanthevor.salvagestack`, version 0.2.0, versionCode 3. Exported APK reports min SDK 24, target SDK 36, arm64-v8a. APK alignment/export/signature verification succeeded. No install/launch on a device was possible. Permission: VIBRATE only; internet disabled.
+Android: `com.vanthevor.salvagestack`, version 0.2.1, versionCode 4. Exported APK reports min SDK 24, target SDK 36, arm64-v8a. APK alignment/export/signature verification succeeded. No install/launch on a device was possible. Permission: VIBRATE only; internet disabled.
 
 The included APK uses the same **development-only** signer as the 0.1.0 APK supplied in this conversation, so this update can preserve the existing installation and save data. It was not signed using any production key or Parcel Pilot identity. That temporary key is not included. A subsequent debug APK signed by a different key may require uninstalling this development build first, which deletes that installation's local saves. Preserve player data before changing signing identity for a real release.
 

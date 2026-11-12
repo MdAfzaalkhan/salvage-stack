@@ -28,9 +28,10 @@ func run(main: Node) -> void:
 	game.place_at(0)
 	for i in range(8):
 		game.place_at(float(game.arena.sequence.route[i]))
-		if i==4: await capture("04-build")
+		if i==2: await capture("04-early-build")
 		game.perform_action()
 		await settled()
+	await capture("04-full-tower")
 	game.arena.select_number(2)
 	await capture("05-extract-selected")
 	game.pause_menu()

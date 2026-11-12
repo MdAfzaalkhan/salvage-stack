@@ -1,44 +1,32 @@
-# Verification — 0.2.0 Dark Glass
+# Verification — 0.2.1
 
-## Automated checks passed
+Godot remains **4.7.2.stable.official.ed1daf0bf**, Standard, Compatibility, macOS. No engine/plugin upgrades. Headless checks used 120 Hz physics; the longer suite was rerun with `--fixed-fps 120` to drive the same fixed steps without real-time waiting.
 
-Engine remains **4.7.2.stable.official.ed1daf0bf**, Godot Standard on macOS, Compatibility. No plugin/toolchain upgrades were made.
-
-| Check | Result |
+| Automated check | Result |
 |---|---|
-| 12 authored reference placements × 6 extraction orders | 72 / 72 wins |
+| Authored placements × all six treasure-removal orders | 72 / 72 wins |
 | Representative repeated constructions | 9 / 9 wins |
-| Settled build/extraction checkpoint restoration suffixes | 120 / 120 wins |
-| Duplicate Drop/Extract, real loss/culprit, pause clock/body, retry reset | Passed |
-| Corrupt save backup recovery, validation, 0.1.0 migration | Passed |
-| Four tutorial stages, simulated touch, any-number selection, Skip and completion persistence | Passed |
-| Actual Control-node button contrast ≥4.5:1 in normal, hover, pressed, hover-pressed, focus, disabled states | Passed |
-| Navigation/action buttons, pause/settings/results bounds at 720×1280, 720×1560, 960×1280 | Passed |
-| Sequence card drag scrolls without launching; tap launches the selected sequence | Passed |
-| Modal transparent until positioned, centred safe layout, rapid overlay replacement | Passed |
-| Pause/resume held pointer reset and fresh slider/button instances | Passed |
-| Immediate collision disable/removal before decorative flight | Passed |
-| Recovery increment once, no colliders in effect, remaining bodies not frozen | Passed |
-| Actual successful round and actual failed construction/results shelf data | Passed |
-| Static Reduced Motion hero and available simplified drawing path | Passed |
-| Original pixel font glyph availability and wordmark width | Passed |
-| Android APK export and independent signature/package verification | Passed |
+| Centre-placement probes | 12 sampled outcomes recorded |
+| Settled checkpoint restoration suffixes | 120 / 120 wins |
+| Duplicate actions, real loss culprit, pause, retry, corrupt-save recovery | Passed |
+| Tutorial four stages, simulated touch, migration, Skip/completion persistence | Passed |
+| Six button-state contrast checks, menus/results/navigation bounds | Passed |
+| Card touch dragging and tapping, modal positioning, audio controls, Reduced Motion | Passed |
+| Immediate collision removal, non-colliding extraction copy, no tower freezing | Passed |
+| Exact-contour texture-alpha samples | 665,768 / 665,768 match |
+| Texture coverage | All 61 materials; all authored shapes and display variants |
+| Actual eight-placement towers at 720×1280, 720×1560, 960×1280 | 36 / 36 fit; no per-drop Build zoom on authored routes |
+| Render-only framing and transformed touch selection | Passed |
+| Android debug export and independent signature/package checks | Passed; version 0.2.1 / code 4 |
 
-The UI/contrast/touch tests use actual Godot nodes, simulated events and physics in headless mode. They are **not** rendered visual inspection or physical-device testing. JSON evidence and runnable scripts are included. The scripts' JSON failure arrays are empty, and logs were also checked for script/deferred-call errors.
+`evidence/` contains JSON records. These tests inspect real Godot nodes, image alpha, physics and simulated input. They do not render screenshots and do not establish visual quality or phone readability. The route/order results apply to those sampled arrangements, not every possible construction or cross-device determinism.
 
-`evidence/preservation.json` records unchanged hashes for content, saves, audio, audio buses and the existing commerce boundary. Arena changes are rendering, a failure-contact marker and a visual extraction signal; original physical dimensions, material/mass, integration, thresholds, loss plane at y=74 and round completion logic remain.
+Preservation checks compare the previous 0.2.0 source: content, piece-body implementation, saves, audio, commerce and audio buses are byte-identical; Arena before its drawing function is byte-identical. Export settings change only version name/code. No local checkout was overwritten by this session.
 
-The SDK signer verifies the APK (v2/v3 signatures), package `com.vanthevor.salvagestack`, versionCode 3/versionName 0.2.0, min SDK 24/target SDK 36, arm64-v8a. The signer matches the previously supplied development APKs. No production key, ad ID or private project configuration was copied.
+## Outstanding
 
-## Not verified / blocked
-
-- Actual screenshots and recording: **not produced**. Godot application control was denied; this environment could not use a graphical Godot session. A real-render capture harness is provided, but its existence is not claimed as completed capture.
-- The reference bitmap could not be downloaded for visual inspection. Its metadata/OCR and the user's detailed brief guided implementation; exact material/spacing/lighting comparison remains unverified.
-- Physical Android install, cutouts, navigation bars, touch comfort, audible balance, haptics, frame pacing/heat and lifecycle behaviour remain untested. ADB could not open its listener.
-- Headless layout/contrast checks cannot establish pixel-level readability, glyph rendering, glass quality, phone safe areas or faithful reference matching. All nine requested screenshots and the Home/extraction recording still require a permitted graphical run.
-- The original pixel font is intentionally a new 5×7 font, rather than an unlicensed copy of the reference typography. Glass is lightweight clipped 2D gradient/bevel/facet artwork, not real-time 3D refraction. These visual differences need review against the reference.
-- Native monetisation remains unconfigured, and release signing/AAB/store preparation are still outstanding. No iOS export/device check was performed.
-
-The local engine logs a system-certificate query error in this restricted offline environment. Export also reports inability to save global editor settings and connect to ADB after the APK was exported/verified. These were not hidden as successful device tests.
-
-Results cover sampled constructions and this engine/platform. They do not prove all possible constructions or identical physics across devices. Human difficulty/round-length validation is unchanged from the prior build.
+- Requested running screenshots (early build, completed tower, selected extraction and Home), same-size before/after and recording: **not produced**. Native graphical Godot aborts during `_RegisterApplication` / NSApplication initialization; application launch also fails. The Android emulator aborts in its startup/bootstrap path. Capture scripts are provided but are not evidence that captures were made.
+- No physical Android device was connected. Android performance, frame pacing, heat, physical safe areas, touch comfort, haptics and audio balance remain untested.
+- The approved/current images were visible in this request. Final brightness, reflections, material depth and spacing still need running-screen comparison. No claim of visual parity.
+- Android export succeeds and APK verification passes; the engine separately reports it cannot save global editor settings from this restricted session. This does not count as device verification.
+- Monetisation configuration, production signing/AAB/store work and iOS device export remain outstanding as before.

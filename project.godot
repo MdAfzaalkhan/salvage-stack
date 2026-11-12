@@ -1,32 +1,48 @@
-; Salvage Stack — Godot 4.7.2 Standard
+; Engine configuration file.
+; It's best edited using the editor UI and not directly,
+; since the parameters that go here are not all obvious.
+;
+; Format:
+;   [section] ; section goes between []
+;   param=value ; assign values to parameters
+
 config_version=5
+
 [application]
+
 config/name="Salvage Stack"
-config/version="0.2.0"
+config/version="0.2.1"
 run/main_scene="res://main.tscn"
 config/features=PackedStringArray("4.7", "GL Compatibility")
 config/icon="res://assets/icon.svg"
+
+[audio]
+
+buses/default_bus_layout="res://audio_bus.tres"
+
 [display]
+
 window/size/viewport_width=720
 window/size/viewport_height=1280
 window/size/window_width_override=450
 window/size/window_height_override=800
 window/stretch/mode="canvas_items"
 window/stretch/aspect="expand"
-window/dpi/allow_hidpi=true
 window/handheld/orientation=1
-[rendering]
-renderer/rendering_method="gl_compatibility"
-renderer/rendering_method.mobile="gl_compatibility"
-textures/vram_compression/import_etc2_astc=true
-textures/default_filters/use_nearest_mipmap_filter=false
-environment/defaults/default_clear_color=Color(0.03137, 0.03529, 0.0549, 1)
+
 [physics]
+
 common/physics_ticks_per_second=120
 2d/default_gravity=1050.0
 2d/solver/solver_iterations=24
-[audio]
-buses/default_bus_layout="res://audio_bus.tres"
+
+[rendering]
+
+renderer/rendering_method="gl_compatibility"
+renderer/rendering_method.mobile="gl_compatibility"
+textures/vram_compression/import_etc2_astc=true
+environment/defaults/default_clear_color=Color(0.03137, 0.03529, 0.0549, 1)
 
 [salvage]
+
 visuals/simple_effects=false

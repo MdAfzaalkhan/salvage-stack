@@ -20,16 +20,16 @@ func settled() -> void:
 func touch_place(x: float) -> void:
 	var touch = InputEventScreenTouch.new()
 	touch.pressed=true
-	touch.position=game.arena.global_position+Vector2(x,-160)
+	touch.position=root.canvas_transform*(game.arena.global_position+Vector2(x,-160))
 	game._unhandled_input(touch)
 	var e = InputEventScreenDrag.new()
-	e.position = game.arena.global_position+Vector2(x,-160)
+	e.position = root.canvas_transform*(game.arena.global_position+Vector2(x,-160))
 	game._unhandled_input(e)
 func bounds() -> void:
 	var box = game.coach_panel.get_global_rect()
 	check(game.action_button.get_global_rect().end.y<=root.size.y-game.bottom_inset,"tutorial action respects bottom inset")
 	check(box.end.x<=root.size.x and box.end.y<game.action_button.get_global_rect().position.y,"prompt bounds and action separation")
-	check(box.position.y>game.arena.position.y+114,"prompt stays below arena loss label")
+	check(box.position.y>(root.canvas_transform*(game.arena.position+Vector2(0,86))).y,"prompt stays below rendered loss boundary")
 	var message = game.coach_message.get_global_rect()
 	check(message.end.y<=box.end.y-5,"prompt text fits card vertically")
 	check(message.end.x<=box.end.x,"prompt text fits horizontally")
@@ -94,7 +94,7 @@ func run() -> void:
 			if int(b.spec.treasure)==3: target=b
 		var tap=InputEventScreenTouch.new()
 		tap.pressed=true
-		tap.position=target.global_position
+		tap.position=root.canvas_transform*target.global_position
 		game._unhandled_input(tap)
 		await frame()
 		check(game.tutorial_step()==3 and game.arena.selected==3,"tap any treasure advances select")

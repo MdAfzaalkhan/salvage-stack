@@ -43,6 +43,48 @@ var effects: Node2D
 var background: TextureRect
 var held_pointer = false
 var objective_buttons: Array = []
+var world_zoom = 1.0
+var framing_phase = ""
+var framing_top = 0.0
+var footer_top = 0.0
+
+func _frame_world(top_height: float, bottom: float) -> void:
+	# Canvas transform affects drawing only, never physics transforms or saves.
+	var ceiling = top_inset+202.0
+	world_zoom = minf(2.25,(bottom-ceiling)/(top_height+88.0))
+	world_zoom = minf(world_zoom,(screen_size.x-72.0)/(400.0 if framing_phase=="build" else 280.0))
+	var anchor = Vector2(screen_size.x/2,bottom-86.0*world_zoom)
+	get_viewport().canvas_transform = Transform2D(Vector2(world_zoom,0),Vector2(0,world_zoom),anchor-arena.position*world_zoom)
+
+func _update_framing() -> void:
+	var phase = "extract" if arena.phase in ["extract","won"] else "build"
+	if framing_phase!=phase:
+		framing_phase=phase
+		if phase=="build":
+			# Stable build frame covers structural height and release clearance.
+			# Treasure pockets do not add height on the authored routes.
+			framing_top=136.0
+			for spec in arena.sequence.pieces:
+				if int(spec.treasure)==0: framing_top+=float(spec.h)
+		else:
+			# One closer frame on entering Extract, then retained for all removals.
+			framing_top=maxf(230,-arena.top_y()+26)
+	_frame_world(framing_top,footer_top-14)
+
+func _process(_delta: float) -> void:
+	if screen!="game" or not is_instance_valid(arena): return
+	var top = arena.top_y()
+	if is_instance_valid(arena.ghost): top=minf(top,arena.ghost.position.y-float(arena.ghost.spec.h)/2-30)
+	# Expand only for an exceptional rotated/overhanging tower outside the fixed envelope.
+	if -top>framing_top:
+		var full_envelope=136.0
+		for spec in arena.sequence.pieces: full_envelope+=float(spec.h)
+		framing_top=maxf(-top+50,full_envelope)
+		_frame_world(framing_top,footer_top-14)
+
+func _world_point(point: Vector2) -> Vector2:
+	return get_viewport().canvas_transform.affine_inverse()*point
+
 
 func _ready() -> void:
 	process_mode = Node.PROCESS_MODE_ALWAYS
@@ -188,6 +230,8 @@ func completed() -> int:
 	return n
 
 func home() -> void:
+	get_viewport().canvas_transform=Transform2D.IDENTITY
+	framing_phase=""
 	_clear_held_inputs()
 	_clear_effects()
 	round_token += 1
@@ -292,6 +336,7 @@ func start(index: int, cp: Dictionary = {}) -> void:
 	if is_instance_valid(arena):
 		arena.get_parent().remove_child(arena)
 		arena.queue_free()
+	framing_phase = ""
 	arena = Arena.new()
 	arena.process_mode = Node.PROCESS_MODE_PAUSABLE
 	add_child(arena)
@@ -321,6 +366,20 @@ func start(index: int, cp: Dictionary = {}) -> void:
 
 func _feedback(kind: String) -> void:
 	audio.play(kind)
+	if kind=="select" and not store.data.settings.reduced_motion:
+		for body in arena.bodies:
+			if int(body.spec.treasure)==arena.selected:
+				var flash=ExtractionFX.new()
+				flash.name="SelectionFlash"
+				flash.spec=body.spec
+				flash.position=get_viewport().canvas_transform*body.global_position
+				flash.rotation=body.rotation
+				flash.scale=Vector2.ONE*world_zoom
+				flash.modulate=Color(1.6,1.6,1.6,.35)
+				effects.add_child(flash)
+				var pulse=flash.create_tween()
+				pulse.tween_property(flash,"modulate:a",0.0,.18)
+				pulse.tween_callback(flash.queue_free)
 	if store.data.settings.haptics and OS.get_name() in ["Android","iOS"] and kind in ["drop","extract","fail","complete"]:
 		Input.vibrate_handheld(28 if kind=="fail" else 12,0.35)
 
@@ -329,21 +388,26 @@ func refresh_hud() -> void:
 		return
 	clear_control(hud)
 	hud = surface()
-	var top = column(hud,Vector2(32,top_inset),screen_size.x-64,12)
+	var top = column(hud,Vector2(32,top_inset),screen_size.x-64,6)
 	var row = HBoxContainer.new()
 	top.add_child(row)
-	wordmark(row,26,false).size_flags_horizontal = Control.SIZE_EXPAND_FILL
-	icon_button(row,"pause","Pause",pause_menu)
+	wordmark(row,23,false).size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	var pause_control = preload("res://scripts/compact_pause.gd").new()
+	pause_control.name="Pause"
+	pause_control.tooltip_text="Pause"
+	pause_control.custom_minimum_size=Vector2(88,72)
+	pause_control.pressed.connect(pause_menu)
+	row.add_child(pause_control)
 	var extracting = arena.phase in ["extract","won"]
 	var progress = arena.recovered.size() if extracting else arena.placed
-	text(top,"%s · %d/%d"%["EXTRACT" if extracting else "BUILD",progress,3 if extracting else 8],28)
+	text(top,"%s · %d/%d"%["EXTRACT" if extracting else "BUILD",progress,3 if extracting else 8],24)
 	var divider = ColorRect.new()
 	divider.color = Color("303647")
 	divider.custom_minimum_size.y = 1
 	top.add_child(divider)
 	var preview_row = HBoxContainer.new()
 	preview_row.add_theme_constant_override("separation",14)
-	preview_row.alignment = BoxContainer.ALIGNMENT_CENTER
+	preview_row.alignment = BoxContainer.ALIGNMENT_BEGIN
 	objective_buttons.clear()
 	top.add_child(preview_row)
 	if arena.phase == "build":
@@ -353,21 +417,24 @@ func refresh_hud() -> void:
 			text(slot,"NOW" if id==arena.placed else "NEXT",15,AMBER if id==arena.placed else MUTED,true)
 			var p = Preview.new()
 			p.spec = arena.sequence.pieces[id]
-			p.custom_minimum_size = Vector2(108,54)
+			p.custom_minimum_size = Vector2(80,34)
 			slot.add_child(p)
 	else:
 		for t in range(1,4):
-			var b = button(preview_row,"%d%s"%[t,"  ✓" if arena.recovered.has(t) else ""],func(): arena.select_number(t),false,76)
-			b.tooltip_text = "Treasure %d"%t
-			b.size_flags_horizontal = Control.SIZE_SHRINK_BEGIN
-			b.custom_minimum_size.x = 112
-			b.disabled = arena.recovered.has(t) or arena.waiting or arena.phase!="extract"
-			var edge = Glass.accent(t)
-			b.add_theme_stylebox_override("normal",Glass.panel(edge.darkened(0.91),14,Color(edge,0.7)))
-			if arena.selected==t: b.add_theme_stylebox_override("normal",Glass.panel(edge.darkened(0.78),14,INK))
+			var b = preload("res://scripts/objective.gd").new()
+			b.number=t
+			b.recovered=arena.recovered.has(t)
+			b.selected=arena.selected==t
+			b.tooltip_text="Treasure %d"%t
+			b.custom_minimum_size=Vector2(64,64)
+			b.disabled=b.recovered or arena.waiting or arena.phase!="extract"
+			b.pressed.connect(func(): arena.select_number(t))
+			preview_row.add_child(b)
 			objective_buttons.append(b)
-	var footer = column(hud,Vector2(32,screen_size.y-bottom_inset-322),screen_size.x-64,10)
+	footer_top=screen_size.y-bottom_inset-(254 if tutorial_step()>=0 else 168)
+	var footer = column(hud,Vector2(32,footer_top),screen_size.x-64,6)
 	footer.name = "ActionFooter"
+	_update_framing()
 	coach_step = null
 	coach_message = null
 	coach_note = null
@@ -375,12 +442,12 @@ func refresh_hud() -> void:
 	if tutorial_step()>=0:
 		coach_panel = Coach.new()
 		coach_panel.name = "TutorialPrompt"
-		coach_panel.custom_minimum_size.y = 156
+		coach_panel.custom_minimum_size.y = 124
 		var frame = Glass.panel(Color("151720"),18,Color("4a536b"))
 		frame.set_border_width_all(1)
 		frame.border_color = Color("4a536b")
 		frame.content_margin_top = 10
-		frame.content_margin_bottom = 16
+		frame.content_margin_bottom = 8
 		coach_panel.add_theme_stylebox_override("panel",frame)
 		footer.add_child(coach_panel)
 		var content = VBoxContainer.new()
@@ -388,43 +455,49 @@ func refresh_hud() -> void:
 		coach_panel.add_child(content)
 		var line = HBoxContainer.new()
 		content.add_child(line)
-		coach_step = text(line,"",22,INK)
+		coach_step = text(line,"",18,INK)
 		coach_step.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 		coach_step.vertical_alignment = VERTICAL_ALIGNMENT_CENTER
-		var skip = button(line,"Skip",skip_tutorial,false,64)
+		var skip = button(line,"Skip",skip_tutorial,false,44)
 		skip.name = "SkipTutorial"
 		skip.custom_minimum_size.x = 104
 		skip.add_theme_stylebox_override("normal",StyleBoxEmpty.new())
 		skip.add_theme_font_size_override("font_size",21)
-		coach_message = text(content,"",25,INK,true)
+		coach_message = text(content,"",21,INK,true)
 		coach_message.size_flags_vertical = Control.SIZE_EXPAND_FILL
 		coach_message.vertical_alignment = VERTICAL_ALIGNMENT_CENTER
-		coach_note = text(content,"Numbers are names, not an order.",19,INK,true)
+		coach_note = text(content,"Numbers are names, not an order.",16,INK,true)
 	else:
-		var hint = arena.sequence.note
-		if current==0 and arena.phase=="build" and not store.data.tutorial_done:
-			hint = "Build carefully. Then recover the three treasures.\nLet the grey bridges carry the weight."
+		var hint = "Slide to position" if arena.phase=="build" else ("Choose a treasure" if arena.selected==0 else "Treasure %d selected"%arena.selected)
 		if arena.waiting: hint = "Settling…" if arena.action_time<8 else "Still moving. Pause → Restore checkpoint or Retry."
 		if not store.problem.is_empty(): hint = store.problem
 		var caption = text(footer,hint,23,MUTED,true)
-		caption.custom_minimum_size.y = 156
+		caption.custom_minimum_size.y = 32
 		caption.vertical_alignment = VERTICAL_ALIGNMENT_CENTER
 	if arena.phase=="build":
-		var slider = HSlider.new()
+		var slider = preload("res://scripts/placement_rail.gd").new()
 		slider.name = "PlacementSlider"
 		slider.min_value = -100
 		slider.max_value = 100
 		slider.step = 1
 		slider.value = arena.aim
-		slider.custom_minimum_size.y = 44
+		slider.custom_minimum_size = Vector2(240,36)
+		slider.size_flags_horizontal=Control.SIZE_SHRINK_CENTER
+		var track=Glass.panel(Color("303647"),2,Color("303647"))
+		track.content_margin_top=2
+		track.content_margin_bottom=2
+		track.content_margin_left=0
+		track.content_margin_right=0
+		for state in ["slider","grabber_area","grabber_area_highlight"]: slider.add_theme_stylebox_override(state,track)
+		for state in ["grabber","grabber_highlight","grabber_disabled"]: slider.add_theme_icon_override(state,preload("res://assets/rail-handle.svg"))
 		slider.editable = not arena.waiting
 		slider.value_changed.connect(place_at)
 		footer.add_child(slider)
 	else:
 		var spacer = Control.new()
-		spacer.custom_minimum_size.y = 44
+		spacer.custom_minimum_size.y = 36
 		footer.add_child(spacer)
-	action_button = button(footer,"DROP" if arena.phase=="build" else "EXTRACT %s"%(str(arena.selected) if arena.selected>0 else "TREASURE"),perform_action,false,92)
+	action_button = button(footer,"DROP" if arena.phase=="build" else "EXTRACT %s"%(str(arena.selected) if arena.selected>0 else ""),perform_action,false,80)
 	action_button.icon = load("res://assets/icons/drop.svg" if arena.phase=="build" else "res://assets/icons/extract.svg")
 	action_button.add_theme_constant_override("h_separation",16)
 	action_button.name = "PrimaryAction"
@@ -497,12 +570,12 @@ func _unhandled_input(event: InputEvent) -> void:
 		point = event.position
 		is_press = true
 	elif event is InputEventScreenDrag and held_pointer:
-		place_at(event.position.x-arena.position.x)
+		place_at(_world_point(event.position).x-arena.position.x)
 	elif event is InputEventMouseMotion and held_pointer and Input.is_mouse_button_pressed(MOUSE_BUTTON_LEFT):
-		place_at(event.position.x-arena.position.x)
+		place_at(_world_point(event.position).x-arena.position.x)
 	if is_press:
-		if arena.phase == "build": place_at(point.x-arena.position.x)
-		else: arena.select_at(point)
+		if arena.phase == "build": place_at(_world_point(point).x-arena.position.x)
+		else: arena.select_at(_world_point(point))
 	if event is InputEventKey and event.pressed and not event.echo:
 		if event.keycode == KEY_LEFT: place_at(arena.aim-4)
 		if event.keycode == KEY_RIGHT: place_at(arena.aim+4)
@@ -733,8 +806,10 @@ func _clear_effects() -> void:
 func _extracted(spec: Dictionary, at: Vector2, angle: float, number: int) -> void:
 	# Collision is already disabled by Arena. This node has no physics children.
 	var copy=ExtractionFX.new()
+	copy.name="RecoveryFlight"
 	copy.spec=spec
-	copy.position=at
+	copy.position=get_viewport().canvas_transform*at
+	copy.scale=Vector2.ONE*world_zoom
 	copy.rotation=angle
 	effects.add_child(copy)
 	var token=round_token

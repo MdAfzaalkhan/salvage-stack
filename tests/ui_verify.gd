@@ -59,7 +59,7 @@ func run() -> void:
 		game.start(0)
 		await frame()
 		buttons_in_bounds(game.hud,Vector2(size))
-		check(game.arena.position.y+114<game.hud.get_child(game.hud.get_child_count()-1).position.y,"arena label above footer")
+		check((root.canvas_transform*(game.arena.position+Vector2(0,86))).y<game.hud.get_child(game.hud.get_child_count()-1).position.y,"rendered loss boundary above footer")
 		game.pause_menu()
 		await frame()
 		check(paused,"pause sets paused tree")

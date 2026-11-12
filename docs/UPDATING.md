@@ -1,22 +1,15 @@
-# Apply updates using the Parcel Pilot workflow
+# Apply the update
 
-1. Close Godot and stop editing the target project.
-2. Extract the whole `SalvageStack-0.2.0-update` package anywhere convenient. Keep `apply_update.py`, `payload/` and all three manifest files together.
-3. In Terminal, open that extracted folder and run:
+Close Godot and extract the full ZIP to a separate folder anywhere. In the extracted update folder containing `apply_update.py`, run:
 
 ```bash
-python3 apply_update.py "/Users/mak/Documents/GitHub/salvage-stack" --dry-run
 python3 apply_update.py "/Users/mak/Documents/GitHub/salvage-stack"
 ```
 
-The script lives in the **update package**; the argument is your **existing local game folder**. There is no source-selection prompt, no Downloads assumption and no need to copy the script into the game project.
+Append `--dry-run` for validation without writes. This is the existing Parcel Pilot-style updater workflow. Keep `apply_update.py`, `payload/`, `payload_manifest.json`, `baseline_manifest.json` and `remove_manifest.json` together. Run against the existing game checkout, not against `payload/`; do not copy `payload/` over the checkout before running the updater.
 
-It supports the supplied 0.1.0/0.1.1/0.2.0 source baselines. All payload hashes and conflicts are validated before any target write. Recognised files are replaced; unknown local edits stop the entire update. Extra files, `.git`, `.godot`, local save data and credentials are retained. Generated `.uid`/`.import` files are not overwritten by the manifest. There are no obsolete-file removals in this package.
+The destination is the explicit argument. No Downloads directory is assumed. The script checks incoming and installed hashes, stops before writes if local files conflict, and creates a sibling `salvage-stack-backup-...` folder before replacing source. It rolls back ordinary write failures. Keep the backup for recovery after power loss or process termination.
 
-`project.godot` and export presets are merged rather than overwritten: only the game version, initial dark background, absent simple-effects default and Android/iOS version fields change. Owner signing keys/passwords, app identifiers, native templates, permissions, export paths, unrelated settings and plugins remain. Higher owner build counters are preserved/bumped once; repeating the same update is a no-op.
+Git, Godot caches, player saves, credentials and extra local files are protected. Export presets are merged only for game version/build fields; owner IDs, signing, plugins, paths and permissions remain. Re-running an already applied update is a no-op. Conflicts identify the local files that must be reviewed; they are not silently overwritten.
 
-A sibling backup such as `salvage-stack-backup-YYYYMMDD-HHMMSS-...` is created next to the game folder. It contains the previous versions of replaced files plus `restore_manifest.json`. Ordinary write failures roll back completed changes. Keep the backup until you have checked the update. A force-kill or power loss can still interrupt a multi-file update.
-
-Reopen Godot and let changed assets import. No engine/plugin upgrade or network connection is required. The game save is not reset and the supplied APK is not installed automatically.
-
-The older `update_salvage_stack.py` may remain in your existing game folder for compatibility. Use `apply_update.py` from this package for the Parcel Pilot-style workflow. `payload/` contains the full source snapshot for inspection, but the script applies only manifest files and the documented configuration merges.
+After success, open `/Users/mak/Documents/GitHub/salvage-stack/project.godot` and allow the new textures to import. F5 runs the game. The supplied debug APK is not installed automatically. The older project-local `update_salvage_stack.py`, if present, is retained for compatibility, but use this package's `apply_update.py` for this update.

@@ -8,7 +8,7 @@ Close the editor's running game, use Godot 4.7.2 and run from the extracted/upda
 SALVAGE_TEST_SAVE_PATH=/tmp/salvage-capture-save.json "/Users/mak/Downloads/Godot.app/Contents/MacOS/Godot" --path . -- --capture-demo
 ```
 
-This drives the real game, including an actual successful construction/extraction and an actual failing centred construction. It writes these rendered viewport PNGs in `evidence/`: Home, sequences, tutorial, Build, selected Extract, Pause, Settings, success, failure. It does not edit your regular player save. It is a source/editor developer path; it is not enabled during ordinary play or shipped as an APK tutorial.
+This drives the real game, including an actual successful construction/extraction and an actual failing centred construction. It writes these rendered viewport PNGs in `evidence/`: Home, sequences, tutorial, early Build, completed eight-piece tower, selected Extract, Pause, Settings, success, failure. It does not edit your regular player save. It is a source/editor developer path; it is not enabled during ordinary play or shipped as an APK tutorial.
 
 For a recording of the entrance/idle and extraction flow, Godot Movie Maker supports:
 
